@@ -14,7 +14,11 @@ class Post {
   }
 
   static listar () {
-    return query('SELECT id, titulo FROM posts')
+    return query(`SELECT p.id, p.titulo, COUNT(1) AS comentarios
+     FROM posts p
+     JOIN comentarios c
+     ON c.post_id = p.id
+     GROUP BY p.id`)
   }
 
   static buscarPorId (id) {

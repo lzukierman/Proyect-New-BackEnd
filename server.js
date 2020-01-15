@@ -1,6 +1,7 @@
 const express = require('express')
 const nuevoPostController = require('./controllers/nuevoPost')
 const Post = require('./models/Post')
+const comentariosController =  require("./controllers/comentarios");
 
 const PORT = 3000
 
@@ -9,7 +10,10 @@ const app = express()
 app.set('view engine', 'ejs')
 
 // middleware que procesa el body de la request
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(express.static('public'))
 
 // endpoint "home"
 app.get('/', (req, res, next) => {
@@ -24,6 +28,10 @@ app.get('/posts/:id', (req, res, next) => {
     .then(post => res.render('post', { post }))
     .catch(err => next(err))
 })
+
+
+app.use("/",comentariosController);
+
 
 app.use('/nuevo', nuevoPostController)
 
